@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Face Recognition Attendance System</title>
+  </head>
+  <body>
+    <h1>Face Recognition Attendance System</h1>
+    <button onclick="startCamera()">Start Camera</button>
+    <button onclick="takeAttendance()">Take Attendance</button>
+
+    <script>
+      function startCamera() {
+        fetch('/start_camera')
+          .then(response => {
+            if (response.ok) {
+              console.log('Camera started');
+            } else {
+              console.error('Error starting camera');
+            }
+          });
+      }
+
+      function takeAttendance() {
+        fetch('/take_attendance')
+          .then(response => response.text())
+          .then(data => {
+            const lines = data.split('\n');
+            const rows = lines.map(line => {
+              const cells = line.split(',');
+              return `<tr><td>${cells[0]}</td><td>${cells[1]}</td></tr>`;
+            });
+            const table = `<table>${rows.join('')}</table>`;
+            document.body.innerHTML = table;
+          });
+      }
+    </script>
+  </body>
+</html>
