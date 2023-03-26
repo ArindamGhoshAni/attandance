@@ -1,0 +1,8 @@
+services:
+- name: myapp
+  dockerfile: Dockerfile
+  env:
+    PORT: 8080
+  internal_port: 8080
+  health_check_path: /
+  start_command: gunicorn app:app --bind 0.0.0.0:$PORT --workers 4 --threads 4 --worker-class gthread
